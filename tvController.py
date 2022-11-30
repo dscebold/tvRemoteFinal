@@ -25,6 +25,12 @@ class Television(QMainWindow, Ui_remote):
         self.channelUpButton.clicked.connect(lambda: self.channel_up())
         self.channelDownButton.clicked.connect(lambda: self.channel_down())
         self.muteButton.clicked.connect(lambda: self.mute())
+        window = Tk()
+        window.title('Screen')
+        window.geometry('600x600')
+        window.resizable(False, False)
+        widgets = GUI(window)
+        window.mainloop()
 
     def power(self):
         self.__status = not self.__status
@@ -83,3 +89,19 @@ class Television(QMainWindow, Ui_remote):
 
     def update_tv(self):
         self.status_label.setText(self.__str__())
+
+
+
+from tkinter import *
+from PIL import ImageTk, Image
+
+
+class GUI:
+    def __init__(self, window):
+        """
+        - The code provided is meant to guide you on the dimensions used and variable names standards.
+        - Add the widgets responsible for the name, status, and save button.
+        """
+        self.window = window
+        self.frame1 = Frame(self.window)
+        self.frame1.pack(anchor='w', pady=10)   # anchor='w' helps to change the frame position from center to west.
