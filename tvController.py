@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
-from Labs.src.tvRemoteFinal.tvRemote import *
+from tvRemote import *
+from Labs.src.tvRemoteFinal.screen import *
 
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
@@ -10,11 +11,13 @@ class Television(QMainWindow, Ui_remote):
     MIN_VOLUME = 0
     MAX_VOLUME = 2
     MIN_CHANNEL = 0
-    MAX_CHANNEL = 3
+    MAX_CHANNEL = 4
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self.screen = Screen()
+        self.screen.show()
         self.__status = False
         self.__muted = False
         self.__volume = Television.MIN_VOLUME
@@ -25,16 +28,11 @@ class Television(QMainWindow, Ui_remote):
         self.channelUpButton.clicked.connect(lambda: self.channel_up())
         self.channelDownButton.clicked.connect(lambda: self.channel_down())
         self.muteButton.clicked.connect(lambda: self.mute())
-        window = Tk()
-        window.title('Screen')
-        window.geometry('600x600')
-        window.resizable(False, False)
-        widgets = GUI(window)
-        window.mainloop()
 
     def power(self):
         self.__status = not self.__status
         self.update_tv()
+        self.screen.turn_on(self.__status,self.__channel)
 
     def mute(self):
         self.__muted = not self.__muted
@@ -45,18 +43,25 @@ class Television(QMainWindow, Ui_remote):
             if self.__channel == Television.MAX_CHANNEL:
                 self.__channel = Television.MIN_CHANNEL
                 self.update_tv()
+                self.screen.set_channel(self.__channel)
             else:
                 self.__channel += 1
                 self.update_tv()
+                self.screen.set_channel(self.__channel)
 
     def channel_down(self):
         if self.__status:
             if self.__channel == Television.MIN_CHANNEL:
                 self.__channel = Television.MAX_CHANNEL
                 self.update_tv()
+                self.screen.set_channel(self.__channel)
             else:
                 self.__channel -= 1
                 self.update_tv()
+                self.screen.set_channel(self.__channel)
+
+
+
 
     def volume_up(self):
         if self.__status:
@@ -91,17 +96,27 @@ class Television(QMainWindow, Ui_remote):
         self.status_label.setText(self.__str__())
 
 
-
-from tkinter import *
-from PIL import ImageTk, Image
+class Screen(QMainWindow, Ui_Screen):
 
 
-class GUI:
-    def __init__(self, window):
-        """
-        - The code provided is meant to guide you on the dimensions used and variable names standards.
-        - Add the widgets responsible for the name, status, and save button.
-        """
-        self.window = window
-        self.frame1 = Frame(self.window)
-        self.frame1.pack(anchor='w', pady=10)   # anchor='w' helps to change the frame position from center to west.
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setupUi(self)
+        self.show()
+        self.avatar = QtGui.QPixmap("avatar.jpg").scaled(250, 400)
+        self.ferb = QtGui.QPixmap("ferb.jpg").scaled(250, 400)
+        self.gravity_falls = QtGui.QPixmap("gravityFalls.jpg").scaled(250, 400)
+        self.sherlock = QtGui.QPixmap("sherlock.jpg").scaled(250, 400)
+        self.the_clone_wars = QtGui.QPixmap("theCloneWars.jpg").scaled(250, 400)
+        self.black = QtGui.QPixmap("black.jpg").scaled(250, 400)
+        self.channels = [self.avatar, self.ferb, self.gravity_falls, self.sherlock, self.the_clone_wars]
+        self.image_holder.setPixmap(self.black)
+
+    def set_channel(self, channel):
+        self.image_holder.setPixmap(self.channels[channel])
+
+    def turn_on(self, on_or_off, channel):
+        if on_or_off:
+            self.image_holder.setPixmap(self.channels[channel])
+        else:
+            self.image_holder.setPixmap(self.black)
