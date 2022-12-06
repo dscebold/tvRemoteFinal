@@ -6,7 +6,7 @@ def main():
     window.show()
     app.exec_()
     window.show()
-
+  
 
 
 

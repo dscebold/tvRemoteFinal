@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from tvRemote import *
 from Labs.src.tvRemoteFinal.screen import *
 
+
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
@@ -97,8 +98,6 @@ class Television(QMainWindow, Ui_remote):
 
 
 class Screen(QMainWindow, Ui_Screen):
-
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
@@ -112,10 +111,10 @@ class Screen(QMainWindow, Ui_Screen):
         self.channels = [self.avatar, self.ferb, self.gravity_falls, self.sherlock, self.the_clone_wars]
         self.image_holder.setPixmap(self.black)
 
-    def set_channel(self, channel):
+    def set_channel(self, channel:int):
         self.image_holder.setPixmap(self.channels[channel])
 
-    def turn_on(self, on_or_off, channel):
+    def turn_on(self, on_or_off:bool, channel:int):
         if on_or_off:
             self.image_holder.setPixmap(self.channels[channel])
         else:
