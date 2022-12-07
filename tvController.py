@@ -35,8 +35,9 @@ class Television(QMainWindow, Ui_remote):
         self.screen.turn_on(self.__status,self.__channel)
 
     def mute(self):
-        self.__muted = not self.__muted
-        self.update_tv()
+        if self.__status:
+            self.__muted = not self.__muted
+            self.update_tv()
 
     def channel_up(self):
         if self.__status:
