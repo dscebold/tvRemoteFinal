@@ -2,7 +2,6 @@ from PyQt5.QtWidgets import *
 from tvRemote import *
 from Labs.src.tvRemoteFinal.screen import *
 
-
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
