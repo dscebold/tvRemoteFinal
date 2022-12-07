@@ -30,16 +30,29 @@ class Television(QMainWindow, Ui_remote):
         self.muteButton.clicked.connect(lambda: self.mute())
 
     def power(self):
+        """
+        changes the TV from on to off, or off to on
+        :return: NA
+        """
         self.__status = not self.__status
         self.update_tv()
         self.screen.turn_on(self.__status,self.__channel)
 
     def mute(self):
+        """
+        Mutes or Unmutes the TV if the TV is on
+        :return: NA
+        """
         if self.__status:
             self.__muted = not self.__muted
             self.update_tv()
 
     def channel_up(self):
+        """
+        increments the channel up by one if the tv is on, if it is at the maximum channel, it loops it to the minimum
+        channel
+        :return:NA
+        """
         if self.__status:
             if self.__channel == Television.MAX_CHANNEL:
                 self.__channel = Television.MIN_CHANNEL
@@ -51,6 +64,11 @@ class Television(QMainWindow, Ui_remote):
                 self.screen.set_channel(self.__channel)
 
     def channel_down(self):
+        """
+        increments the channel down by one if the tv is on, if it is at the minimum channel, it loops it to the maximum
+        channel
+        :return: NA
+        """
         if self.__status:
             if self.__channel == Television.MIN_CHANNEL:
                 self.__channel = Television.MAX_CHANNEL
@@ -65,6 +83,12 @@ class Television(QMainWindow, Ui_remote):
 
 
     def volume_up(self):
+        """
+        increments the volume up by one if the tv is on, if it is at the max volume, nothing happens and it stays at max
+        volume.
+        If the TV is muted, it unmutes the TV and nothing else happens
+        :return:NA
+        """
         if self.__status:
             if self.__muted:
                 self.mute()
@@ -77,6 +101,12 @@ class Television(QMainWindow, Ui_remote):
                 self.update_tv()
 
     def volume_down(self):
+        """
+        increments the volume down by one if the tv is on, if it is at the minimum volume, nothing happens and it stays
+        at minimum volume.
+        If the TV is muted, it unmutes the TV and nothing else happens
+        :return: NA
+        """
         if self.__status:
             if self.__muted:
                 self.mute()
@@ -89,11 +119,19 @@ class Television(QMainWindow, Ui_remote):
                 self.update_tv()
 
     def __str__(self):
+        """
+        Creates a string that contains all of the relevant information for the TV
+        :return: a string containing power, volume, and channel
+        """
         if self.__muted:
             return f"TV status:\nPower = {self.__status}\nChannel = {self.__channel}\nVolume = Muted"
         return f"TV status:\nPower = {self.__status}\nChannel = {self.__channel}\nVolume = {self.__volume}"
 
     def update_tv(self):
+        """
+        sets the text label on the remote to the toString method
+        :return: NA
+        """
         self.status_label.setText(self.__str__())
 
 
@@ -112,9 +150,21 @@ class Screen(QMainWindow, Ui_Screen):
         self.image_holder.setPixmap(self.black)
 
     def set_channel(self, channel:int):
+        """
+        Sets the screen Image to the current channel image
+        :param channel: current channel
+        :return: NA
+        """
         self.image_holder.setPixmap(self.channels[channel])
 
     def turn_on(self, on_or_off:bool, channel:int):
+        """
+        if TV is turned off sets screen to black
+        if TV is turned on sets screen to current channel
+        :param on_or_off: boolean that states whether TV is on or off
+        :param channel: Current channel 
+        :return: NA
+        """"
         if on_or_off:
             self.image_holder.setPixmap(self.channels[channel])
         else:
