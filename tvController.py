@@ -164,7 +164,7 @@ class Screen(QMainWindow, Ui_Screen):
         :param on_or_off: boolean that states whether TV is on or off
         :param channel: Current channel 
         :return: NA
-        """"
+        """
         if on_or_off:
             self.image_holder.setPixmap(self.channels[channel])
         else:
